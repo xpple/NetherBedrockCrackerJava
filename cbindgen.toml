@@ -1,0 +1,3 @@
+language = "C"
+header = "/* Auto-generated C header file */"
+pragma_once = true

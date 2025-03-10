@@ -1,0 +1,48 @@
+plugins {
+    id 'java'
+}
+
+base {
+    archivesName = project.archives_base_name
+    version = project.version
+    group = project.maven_group
+}
+
+repositories {
+    mavenCentral()
+}
+
+configurations {
+    includedLibrary
+    implementation.extendsFrom includedLibrary
+}
+
+dependencies {
+    includedLibrary 'commons-io:commons-io:2.18.0'
+
+    testImplementation platform('org.junit:junit-bom:5.10.0')
+    testImplementation 'org.junit.jupiter:junit-jupiter'
+}
+
+jar {
+    from(configurations.includedLibrary.collect { it.isDirectory() ? it : zipTree(it) })
+
+    from("LICENSE")
+
+    manifest {
+        attributes('Main-Class': 'dev.xpple.netherbedrockcrackerjava.Main')
+    }
+}
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_23
+    targetCompatibility = JavaVersion.VERSION_23
+}
+
+tasks.withType(JavaCompile).configureEach {
+    options.encoding = "UTF-8"
+}
+
+test {
+    useJUnitPlatform()
+}
