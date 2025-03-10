@@ -1,42 +1,29 @@
-.gradle
+# Gradle
+.gradle/
 build/
-!gradle/wrapper/gradle-wrapper.jar
-!**/src/main/**/build/
-!**/src/test/**/build/
+out/
+classes/
 
-### IntelliJ IDEA ###
+# IntelliJ IDEA
 .idea/
 *.iws
 *.iml
 *.ipr
-out/
-!**/src/main/**/out/
-!**/src/test/**/out/
 
-### Eclipse ###
-.apt_generated
-.classpath
-.factorypath
-.project
-.settings
-.springBeans
-.sts4-cache
-bin/
-!**/src/main/**/bin/
-!**/src/test/**/bin/
+# Eclipse
+.launch
 
-### NetBeans ###
-/nbproject/private/
-/nbbuild/
-/dist/
-/nbdist/
-/.nb-gradle/
-
-### VS Code ###
+# VS Code
+.settings/
 .vscode/
-
-### Mac OS ###
+bin/
+.classpath
+.project
+# Mac OS
 .DS_Store
 
-### Project ###
-src/main/resources/bedrock_cracker.dll
+# Fabric
+run/
+
+# Mod
+src/main/resources/bedrock_cracker.*

@@ -1,37 +1,77 @@
 plugins {
-    id 'java'
+    id 'fabric-loom' version "${fabric_loom_version}"
+    id 'maven-publish'
 }
 
 base {
     archivesName = project.archives_base_name
-    version = project.version
+    version = project.mod_version
     group = project.maven_group
+}
+
+loom {
+    accessWidenerPath = file('src/main/resources/netherbedrockcracker.aw')
 }
 
 repositories {
     mavenCentral()
-}
-
-configurations {
-    includedLibrary
-    implementation.extendsFrom includedLibrary
+    maven {
+        name = 'xpple'
+        url = 'https://maven.xpple.dev/maven2'
+    }
+    maven {
+        name = 'ParchmentMC'
+        url = 'https://maven.parchmentmc.org'
+    }
+    maven {
+        name = 'DJtheRedstoner'
+        url = 'https://pkgs.dev.azure.com/djtheredstoner/DevAuth/_packaging/public/maven/v1'
+    }
 }
 
 dependencies {
-    includedLibrary 'commons-io:commons-io:2.18.0'
+    minecraft "com.mojang:minecraft:${project.minecraft_version}"
+    mappings loom.layered {
+        officialMojangMappings {
+            nameSyntheticMembers = true
+        }
+        parchment "org.parchmentmc.data:${project.parchment_mappings}"
+    }
+    modImplementation "net.fabricmc:fabric-loader:${project.fabric_loader_version}"
 
-    testImplementation platform('org.junit:junit-bom:5.10.0')
+    modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_api_version}"
+
+    include modImplementation("dev.xpple:clientarguments:${project.clientarguments_version}")
+    include modImplementation("dev.xpple:betterconfig-fabric:${project.betterconfig_version}")
+
+    modRuntimeOnly('me.djtheredstoner:DevAuth-fabric:1.2.1') {
+        exclude group: 'net.fabricmc', module: 'fabric-loader'
+    }
+
+    testImplementation platform("org.junit:junit-bom:${project.junit_version}")
     testImplementation 'org.junit.jupiter:junit-jupiter'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 }
 
-jar {
-    from(configurations.includedLibrary.collect { it.isDirectory() ? it : zipTree(it) })
+processResources {
+    def props = [version: project.mod_version, loader_version: project.fabric_loader_version]
+    filteringCharset = "UTF-8"
 
-    from("LICENSE")
-
-    manifest {
-        attributes('Main-Class': 'dev.xpple.netherbedrockcrackerjava.Main')
+    filesMatching("fabric.mod.json") {
+        expand props
     }
+
+    from("LICENSE") {
+        rename {"${it}_${project.base.archivesName.get()}"}
+    }
+
+    from("src/main/rust/LICENSE") {
+        rename {"${it}_Nether_Bedrock_Cracker"}
+    }
+}
+
+tasks.withType(JavaCompile).configureEach {
+    it.options.release = 23
 }
 
 java {
@@ -39,10 +79,18 @@ java {
     targetCompatibility = JavaVersion.VERSION_23
 }
 
-tasks.withType(JavaCompile).configureEach {
-    options.encoding = "UTF-8"
-}
-
 test {
     useJUnitPlatform()
+}
+
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            artifactId = project.base.archivesName.get()
+            from components.java
+        }
+    }
+
+    repositories {
+    }
 }

@@ -1,0 +1,37 @@
+{
+  "schemaVersion": 1,
+  "id": "netherbedrockcracker",
+  "version": "${version}",
+
+  "name": "Nether Bedrock Cracker",
+  "description": "In-game Minecraft Fabric mod that cracks the (nether) world seed from bedrock patterns.",
+  "authors": [
+    "xpple"
+  ],
+  "contact": {
+    "homepage": "https://xpple.dev/",
+    "sources": "https://github.com/xpple/NetherBedrockCracker/"
+  },
+
+  "license": "LGPL-3.0-or-later",
+  "icon": "assets/netherbedrockcracker/icon.png",
+
+  "environment": "client",
+  "entrypoints": {
+    "client": [
+      "dev.xpple.netherbedrockcracker.NetherBedrockCrackerMod"
+    ]
+  },
+  "mixins": [
+  ],
+  "accessWidener": "netherbedrockcracker.aw",
+
+  "depends": {
+    "java": ">=23",
+    "fabricloader": ">=${loader_version}",
+    "fabric-api": ">=0.37.1",
+    "minecraft": ">=1.21.2 <1.22",
+    "betterconfig": "*",
+    "clientarguments": "*"
+  }
+}
