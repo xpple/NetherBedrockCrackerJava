@@ -19,13 +19,13 @@ public class NetherBedrockCrackerMod implements ClientModInitializer {
     public static final String MOD_ID = "netherbedrockcracker";
 
     static {
-        String libraryName = System.mapLibraryName("bedrock_cracker");
+        String libraryName = System.mapLibraryName("libbedrockcracker");
         String extension = FilenameUtils.getExtension(libraryName);
-        libraryName = "bedrock_cracker" + '.' + extension;
+        libraryName = "libbedrockcracker" + '.' + extension;
         URL libraryPath = NetherBedrockCrackerMod.class.getClassLoader().getResource(libraryName);
         Path libcubiomes;
         try {
-            libcubiomes = Files.createTempFile("bedrock_cracker", '.' + extension);
+            libcubiomes = Files.createTempFile("libbedrockcracker", '.' + extension);
             IOUtils.copy(libraryPath, libcubiomes.toFile());
         } catch (Exception e) {
             throw new RuntimeException(e);

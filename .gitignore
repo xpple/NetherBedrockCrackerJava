@@ -26,4 +26,4 @@ bin/
 run/
 
 # Mod
-src/main/resources/bedrock_cracker.*
+src/main/resources/libbedrockcracker.*
