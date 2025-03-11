@@ -20,24 +20,23 @@ jobs:
         with:
           submodules: 'true'
 
-      - name: Change directory to Rust submodule
-        run: cd src/main/rust
       - name: Compile shared library (ubuntu-latest)
         if: matrix.os == 'ubuntu-latest'
+        working-directory: src/main/rust
         run: |
           cargo build --release
-          mv target/release/libbedrockcracker.so ../resources
+          mv target/release/liblibbedrockcracker.so ../resources/libbedrockcracker.so
       - name: Compile shared library (macos-latest)
         if: matrix.os == 'macos-latest'
+        working-directory: src/main/rust
         run: |
           rustup target add aarch64-apple-darwin x86_64-apple-darwin
           cargo build --release --target aarch64-apple-darwin
-          mv target/release/libbedrockcracker.dylib target/release/libbedrockcracker_aarch64.dylib
           cargo build --release --target x86_64-apple-darwin
-          mv target/release/libbedrockcracker.dylib target/release/libbedrockcracker_x86_64.dylib
-          lipo -create -output ../resources/libbedrockcracker.dylib target/release/libbedrockcracker_aarch64.dylib target/release/libbedrockcracker_x86_64.dylib
+          lipo -create -output ../resources/libbedrockcracker.dylib target/aarch64-apple-darwin/release/liblibbedrockcracker.dylib target/x86_64-apple-darwin/release/liblibbedrockcracker.dylib
       - name: Compile shared library (windows-latest)
         if: matrix.os == 'windows-latest'
+        working-directory: src/main/rust
         run: |
           cargo build --release
           mv target/release/libbedrockcracker.dll ../resources
